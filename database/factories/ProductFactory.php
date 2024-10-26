@@ -22,7 +22,6 @@ class ProductFactory extends Factory
             'description' => fake()->sentence(),
             'price' => fake()->randomNumber(2, 1),
             'image' => fake()->imageUrl(),
-            'slug'=> str()->slug($name),
             'category_id' => Category::all()->random()->id
         ];
     }
