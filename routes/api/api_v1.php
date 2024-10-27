@@ -9,3 +9,8 @@ Route::group([
     require __DIR__ . '/admin.php';
 });
 
+Route::group([
+    'as' => 'admin.',
+], function () {
+require __DIR__ . '/public.php';
+});
