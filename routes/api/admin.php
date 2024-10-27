@@ -2,6 +2,7 @@
 
 
 use App\Http\Controllers\V1\Admin\Category\CategoryController;
+use App\Http\Controllers\V1\Admin\Product\ProductController;
 use App\Http\Controllers\V1\Admin\Users\UserController;
 use App\Http\Controllers\V1\Admin\Users\UserCustomerController;
 use App\Http\Controllers\V1\Admin\Users\UserAdminController;
@@ -18,3 +19,4 @@ Route::group([
 });
 
 Route::apiResource('categories', CategoryController::class);
+Route::apiResource('products', ProductController::class);
