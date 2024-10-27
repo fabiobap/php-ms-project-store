@@ -3,6 +3,9 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Models\Traits\HasExternalId;
+use Database\Factories\UserFactory;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -10,8 +13,8 @@ use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
-    /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable;
+    /** @use HasFactory<UserFactory> */
+    use HasFactory, HasExternalId, Notifiable;
 
     /**
      * The attributes that are mass assignable.
@@ -23,6 +26,7 @@ class User extends Authenticatable
         'email',
         'password',
         'role_id',
+        'uuid',
     ];
 
     /**
@@ -38,6 +42,20 @@ class User extends Authenticatable
     public function role(): BelongsTo
     {
         return $this->belongsTo(Role::class);
+    }
+
+    public function scopeAdmin(Builder $query): Builder
+    {
+        return $query->withWhereHas('role', function ($query) {
+            $query->admin();
+        });
+    }
+
+    public function scopeCustomer(Builder $query): Builder
+    {
+        return $query->withWhereHas('role', function ($query) {
+            $query->customer();
+        });
     }
 
     /**
