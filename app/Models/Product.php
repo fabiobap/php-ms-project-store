@@ -7,6 +7,7 @@ use App\Models\Traits\SlugHandler;
 use App\Observers\ProductObserver;
 use Database\Factories\ProductFactory;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -37,5 +38,15 @@ class Product extends Model
             'price' => 'integer',
             'category_id' => 'integer',
         ];
+    }
+
+    /**
+     * Interact with the user's first name.
+     */
+    protected function price(): Attribute
+    {
+        return Attribute::make(
+            get: fn(string $value) => number_format($value / 100, 2),
+        );
     }
 }
