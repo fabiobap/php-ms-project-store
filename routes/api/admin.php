@@ -1,6 +1,7 @@
 <?php
 
 
+use App\Http\Controllers\V1\Admin\Category\CategoryController;
 use App\Http\Controllers\V1\Admin\Users\UserController;
 use App\Http\Controllers\V1\Admin\Users\UserCustomerController;
 use App\Http\Controllers\V1\Admin\Users\UserAdminController;
@@ -15,3 +16,5 @@ Route::group([
     Route::get('/{user:uuid}', [UserController::class, 'show'])->name('show');
     Route::delete('/{user:uuid}', [UserController::class, 'destroy'])->name('destroy');
 });
+
+Route::apiResource('categories', CategoryController::class);
