@@ -8,24 +8,26 @@ use App\Http\Requests\Public\PaymentRequest;
 use App\Models\Order;
 use App\Models\Product;
 use App\Models\User;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 
 class CreateNewOrder
 {
-    public function handle(PaymentRequest $request, PaymentCardDTO $paymentCardDTO): Order
+    public function handle(
+        User           $user,
+        PaymentCardDTO $paymentCardDTO,
+        array          $selectedProducts,
+    ): Order
     {
-        return DB::transaction(function () use ($request) {
-            /** @var User $user */
-            $user = $request->user();
-
-            $productsRequest = collect($request->safe()->products);
+        return DB::transaction(function () use ($selectedProducts, $user) {
+            $selectedProducts = collect($selectedProducts);
             $totalAmount = 0;
             $orderItems = [];
 
-            $productsDB = Product::whereIn('uuid', $productsRequest->pluck('id'))->get();
+            $productsDB = Product::whereIn('uuid', $selectedProducts->pluck('id'))->get();
 
-            $productsDB->each(function (Product $product) use ($productsRequest, &$totalAmount, &$orderItems) {
-                $productRequest = $productsRequest->firstWhere('id', $product->uuid);
+            $productsDB->each(function (Product $product) use ($selectedProducts, &$totalAmount, &$orderItems) {
+                $productRequest = $selectedProducts->firstWhere('id', $product->uuid);
 
                 $totalAmount += $product->getRawOriginal('amount') * $productRequest['quantity'];
 
