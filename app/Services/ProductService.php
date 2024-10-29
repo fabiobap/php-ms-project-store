@@ -20,7 +20,7 @@ class ProductService
             'name',
             'slug',
             'description',
-            'price',
+            'amount',
             'category_id',
             'image',
             'created_at',
