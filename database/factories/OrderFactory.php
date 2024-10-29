@@ -2,10 +2,13 @@
 
 namespace Database\Factories;
 
+use App\Enums\OrderStatus;
+use App\Models\Order;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Order>
+ * @extends Factory<Order>
  */
 class OrderFactory extends Factory
 {
@@ -17,7 +20,10 @@ class OrderFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'external_id' => fake()->uuid(),
+            'amount' => fake()->randomNumber(5, true),
+            'status' => fake()->randomElement(OrderStatus::toArray()),
+            'user_id' => User::all()->random()->id,
         ];
     }
 }
