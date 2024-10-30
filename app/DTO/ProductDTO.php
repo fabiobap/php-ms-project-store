@@ -7,7 +7,7 @@ readonly class ProductDTO
 
     public function __construct(
         public string  $name,
-        public int     $price,
+        public int     $amount,
         public string  $description,
         public int     $category_id,
         public ?string $slug = null,
@@ -19,7 +19,7 @@ readonly class ProductDTO
     {
         return [
             'name' => $this->name,
-            'price' => $this->price,
+            'amount' => $this->amount,
             'description' => $this->description,
             'category_id' => $this->category_id,
             'slug' => $this->slug,

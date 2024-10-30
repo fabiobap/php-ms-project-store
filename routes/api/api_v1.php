@@ -6,7 +6,11 @@ use Illuminate\Support\Facades\Route;
 Route::group([
     'prefix' => 'admin',
     'as' => 'admin.',
-    'middleware' => ['auth:sanctum', 'ability:' . APITokenTypes::ACCESS_TOKEN->getAbility()],
+    'middleware' => [
+        'auth:sanctum',
+        'ability:' . APITokenTypes::ACCESS_TOKEN->getAbility(),
+        'admin'
+    ],
 ], function () {
     require __DIR__ . '/admin.php';
 });

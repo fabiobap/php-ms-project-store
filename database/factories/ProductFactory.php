@@ -21,7 +21,7 @@ class ProductFactory extends Factory
         return [
             'name' => $name = fake()->words(3, true),
             'description' => fake()->sentence(),
-            'price' => fake()->randomNumber(2, 1),
+            'amount' => fake()->randomNumber(4, 1),
             'image' => fake()->imageUrl(),
             'category_id' => Category::all()->random()->id
         ];

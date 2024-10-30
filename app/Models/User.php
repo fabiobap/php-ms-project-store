@@ -3,11 +3,13 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
-use App\Models\Traits\HasExternalId;
+use App\Enums\RoleNames;
+use App\Models\Traits\HasExternalUuid;
 use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -15,7 +17,7 @@ use Laravel\Sanctum\HasApiTokens;
 class User extends Authenticatable
 {
     /** @use HasFactory<UserFactory> */
-    use HasApiTokens, HasFactory, HasExternalId, Notifiable;
+    use HasApiTokens, HasFactory, HasExternalUuid, Notifiable;
 
     /**
      * The attributes that are mass assignable.
@@ -45,6 +47,11 @@ class User extends Authenticatable
         return $this->belongsTo(Role::class);
     }
 
+    public function orders(): HasMany
+    {
+        return $this->hasMany(Order::class);
+    }
+
     public function scopeAdmin(Builder $query): Builder
     {
         return $query->withWhereHas('role', function ($query) {
@@ -57,6 +64,16 @@ class User extends Authenticatable
         return $query->withWhereHas('role', function ($query) {
             $query->customer();
         });
+    }
+
+    public function isAdmin(): bool
+    {
+        return $this->role?->name === RoleNames::ADMIN->value;
+    }
+
+    public function isCustomer(): bool
+    {
+        return $this->role?->name === RoleNames::CUSTOMER->value;
     }
 
     /**
