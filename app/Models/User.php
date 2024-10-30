@@ -3,6 +3,7 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Enums\RoleNames;
 use App\Models\Traits\HasExternalUuid;
 use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Builder;
@@ -48,7 +49,7 @@ class User extends Authenticatable
 
     public function orders(): HasMany
     {
-        return  $this->hasMany(Order::class);
+        return $this->hasMany(Order::class);
     }
 
     public function scopeAdmin(Builder $query): Builder
@@ -63,6 +64,16 @@ class User extends Authenticatable
         return $query->withWhereHas('role', function ($query) {
             $query->customer();
         });
+    }
+
+    public function isAdmin(): bool
+    {
+        return $this->role?->name === RoleNames::ADMIN->value;
+    }
+
+    public function isCustomer(): bool
+    {
+        return $this->role?->name === RoleNames::CUSTOMER->value;
     }
 
     /**
