@@ -14,6 +14,7 @@ class UserController extends Controller
      */
     public function show(User $user): UserResource
     {
+        $user->load('role');
         return new UserResource($user);
     }
 

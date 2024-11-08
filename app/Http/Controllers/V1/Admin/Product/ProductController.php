@@ -44,6 +44,8 @@ class ProductController extends Controller
      */
     public function show(Product $product): ProductResource
     {
+        $product->load('category');
+
         return new ProductResource($product);
     }
 
