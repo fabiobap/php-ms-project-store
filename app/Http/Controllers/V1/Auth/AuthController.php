@@ -22,7 +22,7 @@ class AuthController extends Controller
     public function login(LoginRequest $request, CreateNewAccessToken $newAccessTokenAction, CreateNewRefreshToken $refreshTokenAction): JsonResponse
     {
         if (!Auth::attempt($request->validated())) {
-            return response()->json(['error' => 'Unauthorized'], Response::HTTP_UNAUTHORIZED);
+            return response()->json(['message' => 'Invalid credentials'], Response::HTTP_UNAUTHORIZED);
         }
 
         /** @var User $user */
