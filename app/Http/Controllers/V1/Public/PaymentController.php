@@ -22,7 +22,7 @@ class PaymentController extends Controller
             new PaymentCardDTO(...$request->safe()->card),
             $request->safe()->products
         );
-        $order->load('orderItems.product');
+        $order->load('orderItems.product', 'user');
 
         return new OrderResource($order);
     }
